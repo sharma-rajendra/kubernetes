@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: arn:aws:iam::12345678901:role/ngdemo-NodeInstanceRole-1RGBHGJCNUO4T #This role created by nodegroupyml which is triggrred cloudfront please check inside the role (eksnode-NodeInstanceRole)
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-nfs-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
+        volumeMounts:
+         - name: nfs-volume
+           mountPath: /mnt/nfs # Please change the destination you like the share to be mounted too
+        command: ["/bin/sh"]
+        args: ["-c", "sleep 500000"]
+      volumes:
+      - name: nfs-volume
+        nfs:
+         server: 192.168.1.215 # Please change this to your NFS server
+         path: /var/nfs # Please change with nfs shared folder
